@@ -16,10 +16,22 @@ class WeatherSliverBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverAppBar(
       actions: <Widget>[
-        IconButton(
-          onPressed: () =>
-              Navigator.of(context).pushNamed(AppRoutes.SEARCH_PAGE),
-          icon: Icon(Icons.search),
+        Padding(
+          padding: const EdgeInsets.only(
+            right: 5,
+          ),
+          child: CircleAvatar(
+            radius: 17,
+            backgroundColor: Color.fromRGBO(0, 0, 0, 0.5),
+            child: IconButton(
+              onPressed: () =>
+                  Navigator.of(context).pushNamed(AppRoutes.SEARCH_PAGE),
+              icon: Icon(Icons.search),
+              iconSize: 20,
+              color: Colors.white,
+              splashColor: Colors.black12,
+            ),
+          ),
         ),
       ],
       expandedHeight: 400,

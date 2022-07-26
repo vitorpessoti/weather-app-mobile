@@ -30,6 +30,7 @@ class DailyForecastItem extends StatelessWidget {
           ),
         ),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text('${item.weekDay.substring(0, 3)} ${item.day.toString()}'),
             Image.network(

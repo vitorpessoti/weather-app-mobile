@@ -82,16 +82,16 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final WeatherProvider weatherProvider = Provider.of(context);
+    final bool darkMode =
+        weatherProvider.today!.currentTime > weatherProvider.today!.sunset;
 
     return _isLoading
         ? Center(
             child: CircularProgressIndicator(),
           )
         : Scaffold(
-            backgroundColor: weatherProvider.today!.currentTime >
-                    weatherProvider.today!.sunset
-                ? Colors.grey.shade900
-                : Colors.blue.shade400,
+            backgroundColor:
+                darkMode ? Colors.grey.shade900 : Colors.blue.shade400,
             body: CustomScrollView(
               slivers: [
                 WeatherSliverBar(
@@ -102,6 +102,7 @@ class _HomePageState extends State<HomePage> {
                   today: weatherProvider.today!,
                   dailyForecasts: weatherProvider.getDailyForecast,
                   hourlyForecasts: weatherProvider.getHourlyForecast,
+                  darkMode: darkMode,
                 ),
               ],
             ),

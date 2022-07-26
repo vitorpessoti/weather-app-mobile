@@ -12,10 +12,12 @@ class WeatherSliverList extends StatelessWidget {
   final Day today;
   final List<Day> dailyForecasts;
   final List<Hour> hourlyForecasts;
+  final bool darkMode;
   const WeatherSliverList({
     required this.today,
     required this.dailyForecasts,
     required this.hourlyForecasts,
+    required this.darkMode,
   });
 
   @override
@@ -25,7 +27,12 @@ class WeatherSliverList extends StatelessWidget {
     return SliverList(
       delegate: SliverChildListDelegate([
         Padding(
-          padding: const EdgeInsets.all(15.0),
+          padding: const EdgeInsets.only(
+            bottom: 30,
+            top: 15,
+            left: 15,
+            right: 15,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -36,7 +43,7 @@ class WeatherSliverList extends StatelessWidget {
               Subtitles('Daily forecast'),
               DailyForecast(dailyForecasts),
               Subtitles('Current weather info'),
-              CurrentWeatherInfo(today.weatherDetails),
+              CurrentWeatherInfo(today.weatherDetails, darkMode),
             ],
           ),
         ),

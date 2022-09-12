@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:mobile/components/weather-sliver-bar.dart';
 import 'package:mobile/components/weather-sliver-list.dart';
@@ -34,39 +33,38 @@ class _HomePageState extends State<HomePage> {
     final WeatherProvider weatherProvider = Provider.of(context, listen: false);
 
     try {
-      Map forecastResponse = await weatherProvider.getForecast(
+      await weatherProvider.getForecast(
         widget.city.latitude,
         widget.city.longitude,
       );
 
-      if (forecastResponse['status']) {
-        _isLoading = false;
-      } else {
-        await showDialog<void>(
-          context: context,
-          builder: (ctx) => AlertDialog(
-            title: Text(forecastResponse['message']),
-            content: Text(forecastResponse['item'].toString()),
-            actions: [
-              TextButton(
-                onPressed: () =>
-                    Navigator.of(context).pushNamed(AppRoutes.SEARCH_PAGE),
-                child: Text('OK'),
-              )
-            ],
-          ),
-        );
-      }
+      // if (forecastResponse['status']) {
+      _isLoading = false;
+      // } else {
+      //   await showDialog<void>(
+      //     context: context,
+      //     builder: (ctx) => AlertDialog(
+      //       title: Text(forecastResponse['message']),
+      //       content: Text(forecastResponse['item'].toString()),
+      //       actions: [
+      //         TextButton(
+      //           onPressed: () =>
+      //               Navigator.of(context).pushNamed(AppRoutes.SEARCH_PAGE),
+      //           child: Text('OK'),
+      //         )
+      //       ],
+      //     ),
+      //   );
+      // }
     } catch (error, stackTrace) {
       await Sentry.captureException(error, stackTrace: stackTrace);
-
-      Map<String, dynamic> errorObject = jsonDecode(jsonEncode(error));
 
       await showDialog<void>(
         context: context,
         builder: (ctx) => AlertDialog(
-          title: Text(errorObject['message']),
-          content: Text(errorObject['item'].toString()),
+          title: Text('Error'),
+          content: Text(
+              'There was an error fetching the forecast. Please contact the system admin. Error code: 0x003.'),
           actions: [
             TextButton(
               onPressed: () =>
@@ -82,8 +80,10 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final WeatherProvider weatherProvider = Provider.of(context);
-    final bool darkMode =
-        weatherProvider.today!.currentTime > weatherProvider.today!.sunset;
+    final currentTime = weatherProvider.today?.currentTime ?? 0;
+    final sunset = weatherProvider.today?.sunset ?? 0;
+    final bool darkMode = (currentTime > sunset);
+    // final bool darkMode = true;
 
     return _isLoading
         ? Center(

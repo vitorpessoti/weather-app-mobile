@@ -39,7 +39,7 @@ class _SearchPlacesPageState extends State<SearchPlacesPage> {
         Map searchResponse =
             await citiesProvider.getCitiesByNamePrefix(namePrefix);
 
-        if (searchResponse['status']) {
+        if (searchResponse['data'].length > 0) {
           setState(() {
             _isLoading = false;
           });
@@ -47,8 +47,9 @@ class _SearchPlacesPageState extends State<SearchPlacesPage> {
           await showDialog<void>(
             context: context,
             builder: (ctx) => AlertDialog(
-              title: Text(searchResponse['message']),
-              content: Text(searchResponse['item'].toString()),
+              title: Text('Error'),
+              content: Text(
+                  'There was an error during the search. Please contact the system admin. Error code: 0x001.'),
               actions: [
                 TextButton(
                   onPressed: () =>
@@ -60,15 +61,16 @@ class _SearchPlacesPageState extends State<SearchPlacesPage> {
           );
         }
       } catch (error, stackTrace) {
-        await Sentry.captureException(error, stackTrace: stackTrace);
+        // await Sentry.captureException(error, stackTrace: stackTrace);
 
-        Map<String, dynamic> errorObject = jsonDecode(jsonEncode(error));
+        // Map<String, dynamic> errorObject = jsonDecode(jsonEncode(error));
 
         await showDialog<void>(
           context: context,
           builder: (ctx) => AlertDialog(
-            title: Text(errorObject['message']),
-            content: Text(errorObject['item'].toString()),
+            title: Text('Error'),
+            content: Text(
+                'There was an error during the search. Please contact the system admin. Error code: 0x002.'),
             actions: [
               TextButton(
                 onPressed: () =>

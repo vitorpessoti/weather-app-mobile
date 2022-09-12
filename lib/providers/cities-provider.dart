@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:mobile/classes/config.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/models/city.dart';
 import 'package:http/http.dart' as http;
@@ -25,37 +25,39 @@ class CitiesProvider with ChangeNotifier {
     _items.clear();
     Map<String, String> requestHeaders = {
       'Content-Type': 'application/json; charset=UTF-8',
+      'X-RapidAPI-Host': Config.geodbHost,
+      'X-RapidAPI-Key': Config.geodbKey
     };
 
-    final response = await http.post(
-      Uri.parse('${_baseUrl}/geocoding/namePrefix'),
+    final response = await http.get(
+      Uri.parse(
+          'https://${Config.geodbHost}/v1/geo/cities?namePrefix=${namePrefix}&namePrefixDefaultLangResults=false&sort=-population&types=CITY'),
       headers: requestHeaders,
-      body: jsonEncode({"cityPrefix": namePrefix}),
     );
 
     Map<String, dynamic> responseData = jsonDecode(response.body);
 
-    if (responseData['status']) {
-      responseData['item']['data'].forEach((element) {
-        _items.add(
-          City(
-            id: element['id'],
-            type: element['type'],
-            city: element['city'],
-            name: element['name'],
-            country: element['country'],
-            countryCode: element['countryCode'],
-            region: element['region'],
-            regionCode: element['regionCode'],
-            latitude: element['latitude'],
-            longitude: element['longitude'],
-            population: element['population'],
-          ),
-        );
-      });
-    } else {
-      throw responseData;
-    }
+    // if (responseData['status']) {
+    responseData['data'].forEach((element) {
+      _items.add(
+        City(
+          id: element['id'],
+          type: element['type'],
+          city: element['city'],
+          name: element['name'],
+          country: element['country'],
+          countryCode: element['countryCode'],
+          region: element['region'],
+          regionCode: element['regionCode'],
+          latitude: element['latitude'],
+          longitude: element['longitude'],
+          population: element['population'],
+        ),
+      );
+    });
+    // } else {
+    //   throw responseData;
+    // }
 
     notifyListeners();
     return responseData;
@@ -64,40 +66,35 @@ class CitiesProvider with ChangeNotifier {
   Future<Map> getCitiesByLatLong(double latitude, double longitude) async {
     Map<String, String> requestHeaders = {
       'Content-Type': 'application/json; charset=UTF-8',
+      'X-RapidAPI-Host': Config.geodbHost,
+      'X-RapidAPI-Key': Config.geodbKey
     };
 
-    final response = await http.post(
-      Uri.parse('${_baseUrl}/geocoding/latLong'),
+    final response = await http.get(
+      Uri.parse(
+          'https://${Config.geodbHost}/v1/geo/cities?location=${latitude}${longitude}&limit=1'),
       headers: requestHeaders,
-      body: jsonEncode({
-        "latitude": latitude,
-        "longitude": longitude,
-      }),
     );
 
     Map responseData = jsonDecode(response.body);
 
-    if (responseData['status']) {
-      responseData['item']['data'].forEach((element) {
-        _items.add(
-          City(
-            id: element['id'],
-            type: element['type'],
-            city: element['city'],
-            name: element['name'],
-            country: element['country'],
-            countryCode: element['countryCode'],
-            region: element['region'],
-            regionCode: element['regionCode'],
-            latitude: element['latitude'],
-            longitude: element['longitude'],
-            population: element['population'],
-          ),
-        );
-      });
-    } else {
-      throw responseData;
-    }
+    responseData['data'].forEach((element) {
+      _items.add(
+        City(
+          id: element['id'],
+          type: element['type'],
+          city: element['city'],
+          name: element['name'],
+          country: element['country'],
+          countryCode: element['countryCode'],
+          region: element['region'],
+          regionCode: element['regionCode'],
+          latitude: element['latitude'],
+          longitude: element['longitude'],
+          population: element['population'],
+        ),
+      );
+    });
 
     notifyListeners();
     return responseData;

@@ -33,7 +33,7 @@ class _WelcomePageState extends State<WelcomePage> {
         locData.longitude!,
       );
 
-      if (currentCityResponse['status']) {
+      if (currentCityResponse['data'].length > 0) {
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -44,8 +44,9 @@ class _WelcomePageState extends State<WelcomePage> {
         await showDialog<void>(
           context: context,
           builder: (ctx) => AlertDialog(
-            title: Text(currentCityResponse['message']),
-            content: Text(currentCityResponse['item'].toString()),
+            title: Text('Error'),
+            content: Text(
+                'There was an error getting your current location. Please contact the system admin. Error code: 0x004.'),
             actions: [
               TextButton(
                 onPressed: () => Navigator.of(context).pop(),
@@ -58,13 +59,12 @@ class _WelcomePageState extends State<WelcomePage> {
     } catch (error, stackTrace) {
       await Sentry.captureException(error, stackTrace: stackTrace);
 
-      Map<String, dynamic> errorObject = jsonDecode(jsonEncode(error));
-
       await showDialog<void>(
         context: context,
         builder: (ctx) => AlertDialog(
-          title: Text(errorObject['message']),
-          content: Text(errorObject['item']),
+          title: Text('Error'),
+          content: Text(
+              'There was an error getting your current location. Please contact the system admin. Error code: 0x005.'),
           actions: [
             TextButton(
               onPressed: () =>

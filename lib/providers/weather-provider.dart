@@ -6,7 +6,8 @@ import 'package:http/http.dart' as http;
 import 'package:mobile/models/day.dart';
 import 'package:mobile/models/hour.dart';
 import 'package:mobile/models/weather-details.dart';
-import 'package:mobile/utils/defs.dart';
+// import 'package:mobile/utils/defs.dart';
+import 'package:mobile/classes/config.dart';
 
 class WeatherProvider with ChangeNotifier {
   int? id;
@@ -37,7 +38,7 @@ class WeatherProvider with ChangeNotifier {
     'Saturday',
     'Sunday'
   ];
-  final String _baseUrl = '${Defs.API_URL}';
+  // final String _baseUrl = '${Defs.API_URL}';
 
   Future<Map> getForecast(double latitude, double longitude) async {
     _items.clear();
@@ -47,113 +48,108 @@ class WeatherProvider with ChangeNotifier {
       'Content-Type': 'application/json; charset=UTF-8',
     };
 
-    final response = await http.post(
-      Uri.parse('${_baseUrl}/onecall'),
+    final API_URL_ONECALL =
+        'https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&exclude=alerts,minutely&units=metric&appid=${Config.openWeatherKey}';
+    final response = await http.get(
+      Uri.parse(API_URL_ONECALL),
       headers: requestHeaders,
-      body: jsonEncode({
-        'latitude': latitude,
-        'longitude': longitude,
-        'units': 'metric',
-      }),
     );
 
     Map<String, dynamic> responseData = jsonDecode(response.body);
 
-    if (responseData['status']) {
-      today = new Day(
-        month: 6,
-        day: 2,
-        weekDay: 'Thursday',
-        icon: responseData['item']['current']['weather'][0]['icon'],
-        weather: responseData['item']['current']['weather'][0]['main'],
-        currentTemp: responseData['item']['current']['temp'].toInt(),
-        tempMax: responseData['item']['daily'][0]['temp']['max'].toInt(),
-        tempMin: responseData['item']['daily'][0]['temp']['min'].toInt(),
-        currentTime: responseData['item']['current']['dt'],
-        sunrise: responseData['item']['current']['sunrise'],
-        sunset: responseData['item']['current']['sunset'],
-        weatherDetails: [
-          WeatherDetails(
-              title: 'Feels like',
-              icon: 'feels-like',
-              value: responseData['item']['current']['feels_like']
-                  .toStringAsFixed(0),
-              unit: 'ºC'),
-          WeatherDetails(
-              title: 'Precipitation',
-              icon: 'precipitation',
-              value: '0.3',
-              unit: 'mm'),
-          WeatherDetails(
-              title: 'Wind',
-              icon: 'wind',
-              value: responseData['item']['current']['wind_speed'].toString(),
-              unit: 'km/h'),
-          WeatherDetails(
-              title: 'Pressure',
-              icon: 'pressure',
-              value: responseData['item']['current']['pressure'].toString(),
-              unit: 'hPa'),
-          WeatherDetails(
-              title: 'Humidity',
-              icon: 'humidity',
-              value: responseData['item']['current']['humidity'].toString(),
-              unit: '%'),
-          WeatherDetails(
-              title: 'Dew point',
-              icon: 'dew-point',
-              value: responseData['item']['current']['dew_point']
-                  .toStringAsFixed(0),
-              unit: 'ºC'),
-          WeatherDetails(
-              title: 'UV index',
-              icon: 'sun',
-              value: responseData['item']['current']['uvi'].toStringAsFixed(0),
-              unit: '/10'),
-        ],
+    // if (responseData['status']) {
+    today = new Day(
+      month: 6,
+      day: 2,
+      weekDay: 'Thursday',
+      icon: responseData['current']['weather'][0]['icon'],
+      weather: responseData['current']['weather'][0]['main'],
+      currentTemp: responseData['current']['temp'].toInt(),
+      tempMax: responseData['daily'][0]['temp']['max'].toInt(),
+      tempMin: responseData['daily'][0]['temp']['min'].toInt(),
+      currentTime: responseData['current']['dt'],
+      sunrise: responseData['current']['sunrise'],
+      sunset: responseData['current']['sunset'],
+      weatherDetails: [
+        WeatherDetails(
+            title: 'Feels like',
+            icon: 'feels-like',
+            value: responseData['current']['feels_like'].toStringAsFixed(0),
+            unit: 'ºC'),
+        WeatherDetails(
+            title: 'Precipitation',
+            icon: 'precipitation',
+            value: '0.3',
+            unit: 'mm'),
+        WeatherDetails(
+            title: 'Wind',
+            icon: 'wind',
+            value: responseData['current']['wind_speed'].toString(),
+            unit: 'km/h'),
+        WeatherDetails(
+            title: 'Pressure',
+            icon: 'pressure',
+            value: responseData['current']['pressure'].toString(),
+            unit: 'hPa'),
+        WeatherDetails(
+            title: 'Humidity',
+            icon: 'humidity',
+            value: responseData['current']['humidity'].toString(),
+            unit: '%'),
+        WeatherDetails(
+            title: 'Dew point',
+            icon: 'dew-point',
+            value: responseData['current']['dew_point'].toStringAsFixed(0),
+            unit: 'ºC'),
+        WeatherDetails(
+            title: 'UV index',
+            icon: 'sun',
+            value: responseData['current']['uvi'].toStringAsFixed(0),
+            unit: '/10'),
+      ],
+    );
+
+    responseData['daily'].forEach((element) {
+      dynamic datetime = DateTime.fromMillisecondsSinceEpoch(
+        element['dt'] * 1000,
+        isUtc: false,
       );
 
-      responseData['item']['daily'].forEach((element) {
-        dynamic datetime = DateTime.fromMillisecondsSinceEpoch(
-          element['dt'] * 1000,
-          isUtc: false,
-        );
+      _dailyForecast.add(Day(
+        month: datetime.month,
+        day: datetime.day,
+        weekDay: _weekDays[datetime.weekday],
+        icon: element['weather'][0]['icon'],
+        weather: element['weather'][0]['main'],
+        currentTemp: element['temp']['day'].toInt(),
+        tempMax: element['temp']['max'].toInt(),
+        tempMin: element['temp']['min'].toInt(),
+        currentTime: element['dt'],
+        sunrise: element['sunrise'],
+        sunset: element['sunset'],
+        weatherDetails: [],
+      ));
+    });
 
-        _dailyForecast.add(Day(
-          month: datetime.month,
-          day: datetime.day,
-          weekDay: _weekDays[datetime.weekday],
-          icon: element['weather'][0]['icon'],
-          weather: element['weather'][0]['main'],
-          currentTemp: element['temp']['day'].toInt(),
-          tempMax: element['temp']['max'].toInt(),
-          tempMin: element['temp']['min'].toInt(),
-          currentTime: element['dt'],
-          sunrise: element['sunrise'],
-          sunset: element['sunset'],
-          weatherDetails: [],
-        ));
-      });
+    responseData['hourly'].forEach((element) {
+      dynamic datetime = DateTime.fromMillisecondsSinceEpoch(
+        element['dt'] * 1000,
+        isUtc: false,
+      );
 
-      responseData['item']['hourly'].forEach((element) {
-        dynamic datetime = DateTime.fromMillisecondsSinceEpoch(
-          element['dt'] * 1000,
-          isUtc: false,
-        );
-
-        _hourlyForecast.add(Hour(
-          month: datetime.month,
-          day: datetime.day,
-          hour: DateFormat('hh a').format(datetime),
-          icon: element['weather'][0]['icon'],
-          temp: element['temp'].toInt(),
-          humidity: element['humidity'],
-          windSpeed: element['wind_speed'].toInt(),
-        ));
-      });
-    } else {
-      throw responseData;
-    }
+      _hourlyForecast.add(Hour(
+        month: datetime.month,
+        day: datetime.day,
+        hour: DateFormat('hh a').format(datetime),
+        icon: element['weather'][0]['icon'],
+        temp: element['temp'].toInt(),
+        humidity: element['humidity'],
+        windSpeed: element['wind_speed'].toInt(),
+      ));
+    });
+    // } else {
+    //   throw responseData;
+    // }
 
     notifyListeners();
     return responseData;

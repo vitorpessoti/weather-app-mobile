@@ -1,5 +1,5 @@
-import 'package:mobile/models/hour.dart';
-import 'package:mobile/models/weather-details.dart';
+import '../models/hour.dart';
+import '../models/weather-details.dart';
 
 import '../models/month.dart';
 import '../models/day.dart';

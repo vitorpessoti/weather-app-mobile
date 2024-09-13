@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/models/day.dart';
+import '../models/day.dart';
 
 class CurrentDay extends StatelessWidget {
   // const CurrentDay({Key? key}) : super(key: key);

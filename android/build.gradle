@@ -1,12 +1,36 @@
+// // Top-level build file where you can add configuration options common to all sub-projects/modules.
+// plugins {
+//     id 'com.android.application'
+//     id 'kotlin-android'
+// }
+
+// allprojects {
+//     repositories {
+//         google()
+//         mavenCentral()
+//     }
+// }
+
+// rootProject.buildDir = "../build"
+// subprojects {
+//     project.buildDir = "${rootProject.buildDir}/${project.name}"
+//     project.evaluationDependsOn(":app")
+// }
+
+// // tasks.register("clean", Delete) {
+// //     delete rootProject.buildDir
+// // }
+
+
+
 buildscript {
-    ext.kotlin_version = '1.6.0'
+    ext.kotlin_version = '2.0.20'  // Ensure this matches your Kotlin plugin version
     repositories {
         google()
         mavenCentral()
     }
-
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.0'
+        classpath "com.android.tools.build:gradle:8.0.0"  // Ensure this matches your Android Gradle plugin version
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
@@ -18,14 +42,8 @@ allprojects {
     }
 }
 
-rootProject.buildDir = '../build'
+rootProject.buildDir = "../build"
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
-}
-subprojects {
-    project.evaluationDependsOn(':app')
-}
-
-task clean(type: Delete) {
-    delete rootProject.buildDir
+    project.evaluationDependsOn(":app")
 }

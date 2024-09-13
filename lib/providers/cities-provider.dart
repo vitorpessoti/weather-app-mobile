@@ -1,9 +1,9 @@
 import 'dart:convert';
-import 'package:mobile/classes/config.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile/models/city.dart';
+import '../classes/config.dart';
+import '../models/city.dart';
 import 'package:http/http.dart' as http;
-import 'package:mobile/utils/defs.dart';
+// import 'package:mobile/utils/defs.dart';
 
 class CitiesProvider with ChangeNotifier {
   int? id;
@@ -19,10 +19,13 @@ class CitiesProvider with ChangeNotifier {
   String? population;
   List<City> _items = [];
   List<City> get items => [..._items];
-  final String _baseUrl = '${Defs.API_URL}';
+  // final String _baseUrl = '${Defs.API_URL}';
 
   Future<Map> getCitiesByNamePrefix(String namePrefix) async {
     _items.clear();
+    print('---------> getCitiesByNamePrefix');
+    print(Config.geodbHost);
+    print(Config.geodbKey);
     Map<String, String> requestHeaders = {
       'Content-Type': 'application/json; charset=UTF-8',
       'X-RapidAPI-Host': Config.geodbHost,
@@ -64,6 +67,9 @@ class CitiesProvider with ChangeNotifier {
   }
 
   Future<Map> getCitiesByLatLong(double latitude, double longitude) async {
+    print('---------> getCitiesByLatLong');
+    print(Config.geodbHost);
+    print(Config.geodbKey);
     Map<String, String> requestHeaders = {
       'Content-Type': 'application/json; charset=UTF-8',
       'X-RapidAPI-Host': Config.geodbHost,

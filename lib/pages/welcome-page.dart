@@ -1,9 +1,9 @@
-import 'dart:convert';
+// import 'dart:convert';
 import 'package:location/location.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile/pages/home-page.dart';
-import 'package:mobile/providers/cities-provider.dart';
-import 'package:mobile/utils/app-routes.dart';
+import './home-page.dart';
+import '../providers/cities-provider.dart';
+import '../utils/app-routes.dart';
 import 'package:provider/provider.dart';
 import 'package:sentry/sentry.dart';
 
@@ -18,7 +18,7 @@ class _WelcomePageState extends State<WelcomePage> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       _getCurrentLocation();
     });
   }
@@ -27,10 +27,14 @@ class _WelcomePageState extends State<WelcomePage> {
     final CitiesProvider citiesProvider = Provider.of(context, listen: false);
     try {
       final locData = await Location().getLocation();
+      print('----------- locData -----------------');
+      print(locData);
 
       Map currentCityResponse = await citiesProvider.getCitiesByLatLong(
-        locData.latitude!,
-        locData.longitude!,
+        // locData.latitude!,
+        // locData.longitude!,
+        -21.1320832,
+        -47.9789056
       );
 
       if (currentCityResponse['data'].length > 0) {

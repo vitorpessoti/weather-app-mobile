@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/components/current-day.dart';
-import 'package:mobile/components/current-weather-info.dart';
-import 'package:mobile/components/daily-forecast.dart';
-import 'package:mobile/components/hourly-forecast.dart';
-import 'package:mobile/components/subtitles.dart';
+import './current-day.dart';
+import './current-weather-info.dart';
+import './daily-forecast.dart';
+import './hourly-forecast.dart';
+import './subtitles.dart';
 import 'package:intl/intl.dart';
-import 'package:mobile/models/day.dart';
-import 'package:mobile/models/hour.dart';
+import '../models/day.dart';
+import '../models/hour.dart';
 
 class WeatherSliverList extends StatelessWidget {
   final Day today;

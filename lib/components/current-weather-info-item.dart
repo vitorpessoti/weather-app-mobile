@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/models/weather-details.dart';
+import '../models/weather-details.dart';
 
 class CurrentWeatherInfoItem extends StatelessWidget {
   final WeatherDetails details;

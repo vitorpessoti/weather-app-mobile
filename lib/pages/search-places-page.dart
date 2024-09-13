@@ -1,9 +1,9 @@
-import 'dart:convert';
-import 'package:sentry/sentry.dart';
+// import 'dart:convert';
+// import 'package:sentry/sentry.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile/components/search-item.dart';
-import 'package:mobile/providers/cities-provider.dart';
-import 'package:mobile/utils/app-routes.dart';
+import '../components/search-item.dart';
+import '../providers/cities-provider.dart';
+import '../utils/app-routes.dart';
 import 'package:provider/provider.dart';
 
 class SearchPlacesPage extends StatefulWidget {
@@ -60,7 +60,7 @@ class _SearchPlacesPageState extends State<SearchPlacesPage> {
             ),
           );
         }
-      } catch (error, stackTrace) {
+      } catch (error /*, stackTrace*/) {
         // await Sentry.captureException(error, stackTrace: stackTrace);
 
         // Map<String, dynamic> errorObject = jsonDecode(jsonEncode(error));

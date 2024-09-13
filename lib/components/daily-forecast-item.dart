@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/models/day.dart';
-import 'package:mobile/pages/daily-forecast-details-page.dart';
+import '../models/day.dart';
+import '../pages/daily-forecast-details-page.dart';
 // import 'package:mobile/utils/app-routes.dart';
 
 class DailyForecastItem extends StatelessWidget {

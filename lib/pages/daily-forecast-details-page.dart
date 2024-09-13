@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/components/hourly-forecast-details-item.dart';
-import 'package:mobile/components/subtitles.dart';
-import 'package:mobile/data/dummy-data.dart';
-import 'package:mobile/models/day.dart';
+import '../components/hourly-forecast-details-item.dart';
+import '../components/subtitles.dart';
+import '../data/dummy-data.dart';
+import '../models/day.dart';
 
 class DailyForecastDetailsPage extends StatelessWidget {
   final Day item;

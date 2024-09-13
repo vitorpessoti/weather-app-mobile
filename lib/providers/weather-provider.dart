@@ -1,13 +1,13 @@
 import 'dart:convert';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile/models/city.dart';
 import 'package:http/http.dart' as http;
-import 'package:mobile/models/day.dart';
-import 'package:mobile/models/hour.dart';
-import 'package:mobile/models/weather-details.dart';
-// import 'package:mobile/utils/defs.dart';
-import 'package:mobile/classes/config.dart';
+import '../models/city.dart';
+import '../models/day.dart';
+import '../models/hour.dart';
+import '../models/weather-details.dart';
+// import '../utils/defs.dart';
+import '../classes/config.dart';
 
 class WeatherProvider with ChangeNotifier {
   int? id;
@@ -49,7 +49,8 @@ class WeatherProvider with ChangeNotifier {
     };
 
     final API_URL_ONECALL =
-        'https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&exclude=alerts,minutely&units=metric&appid=${Config.openWeatherKey}';
+        'https://api.openweathermap.org/data/3.0/onecall?lat=${latitude}&lon=${longitude}&exclude=alerts,minutely&units=metric&appid=${Config.openWeatherKey}';
+
     final response = await http.get(
       Uri.parse(API_URL_ONECALL),
       headers: requestHeaders,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/components/hourly-forecast-item.dart';
-import 'package:mobile/models/hour.dart';
+import './hourly-forecast-item.dart';
+import '../models/hour.dart';
 
 class HourlyForecast extends StatelessWidget {
   final List<Hour> forecasts;

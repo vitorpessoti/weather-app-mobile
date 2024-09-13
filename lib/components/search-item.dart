@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/models/city.dart';
-import 'package:mobile/pages/home-page.dart';
+import '../models/city.dart';
+import '../pages/home-page.dart';
 
 class SearchItem extends StatelessWidget {
   final City item;

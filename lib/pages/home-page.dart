@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/components/weather-sliver-bar.dart';
-import 'package:mobile/components/weather-sliver-list.dart';
-import 'package:mobile/models/city.dart';
-import 'package:mobile/providers/weather-provider.dart';
-import 'package:mobile/utils/app-routes.dart';
+import '../components/weather-sliver-bar.dart';
+import '../components/weather-sliver-list.dart';
+import '../models/city.dart';
+import '../providers/weather-provider.dart';
+import '../utils/app-routes.dart';
 import 'package:provider/provider.dart';
 import 'package:sentry/sentry.dart';
 

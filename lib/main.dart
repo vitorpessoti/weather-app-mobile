@@ -1,14 +1,12 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:mobile/pages/search-places-page.dart';
-import 'package:mobile/pages/welcome-page.dart';
-import 'package:mobile/providers/cities-provider.dart';
-import 'package:mobile/providers/weather-provider.dart';
-import 'package:mobile/utils/app-routes.dart';
+import './providers/cities-provider.dart';
+import './providers/weather-provider.dart';
 import 'package:provider/provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import './pages/search-places-page.dart';
+import './pages/welcome-page.dart';
+import './utils/app-routes.dart';
 
 Future<void> main() async {
   await dotenv.load(fileName: '.env');
@@ -44,18 +42,14 @@ class WeatherApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('---------------- main.dart');
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-          create: (_) => CitiesProvider(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => WeatherProvider(),
-        ),
+        ChangeNotifierProvider(create: (_) => CitiesProvider()),
+        ChangeNotifierProvider(create: (_) => WeatherProvider())
       ],
       child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Weather App',
+        title: 'Flutter Demo',
         theme: appTheme.copyWith(
           colorScheme: appTheme.colorScheme.copyWith(
             primary: Colors.deepPurple,
@@ -63,11 +57,11 @@ class WeatherApp extends StatelessWidget {
           ),
           canvasColor: const Color.fromRGBO(255, 254, 229, 1),
           textTheme: appTheme.textTheme.copyWith(
-            headline1: const TextStyle(
+            headlineLarge: const TextStyle(
               fontSize: 24,
               fontFamily: 'PTSans',
             ),
-            subtitle1: const TextStyle(
+            titleMedium: const TextStyle(
               fontSize: 18,
               fontFamily: 'PTSans',
               color: Colors.black,
@@ -84,5 +78,45 @@ class WeatherApp extends StatelessWidget {
         },
       ),
     );
+    // return MultiProvider(
+    //   providers: [
+    //     ChangeNotifierProvider(
+    //       create: (_) => CitiesProvider(),
+    //     ),
+    //     ChangeNotifierProvider(
+    //       create: (_) => WeatherProvider(),
+    //     ),
+    //   ],
+    //   child: MaterialApp(
+    //     debugShowCheckedModeBanner: false,
+    //     title: 'Weather App',
+    //     theme: appTheme.copyWith(
+    //       colorScheme: appTheme.colorScheme.copyWith(
+    //         primary: Colors.deepPurple,
+    //         secondary: Colors.teal,
+    //       ),
+    //       canvasColor: const Color.fromRGBO(255, 254, 229, 1),
+    //       textTheme: appTheme.textTheme.copyWith(
+    //         headlineLarge: const TextStyle(
+    //           fontSize: 24,
+    //           fontFamily: 'PTSans',
+    //         ),
+    //         titleMedium: const TextStyle(
+    //           fontSize: 18,
+    //           fontFamily: 'PTSans',
+    //           color: Colors.black,
+    //         ),
+    //       ),
+    //     ),
+    //     darkTheme: ThemeData(
+    //       brightness: Brightness.dark,
+    //     ),
+    //     themeMode: ThemeMode.dark,
+    //     // routes: {
+    //     //   AppRoutes.WELCOME_PAGE: (ctx) => WelcomePage(),
+    //     //   AppRoutes.SEARCH_PAGE: (ctx) => SearchPlacesPage(),
+    //     // },
+    //   ),
+    // );
   }
 }

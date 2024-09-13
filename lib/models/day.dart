@@ -1,4 +1,4 @@
-import 'package:mobile/models/weather-details.dart';
+import '../models/weather-details.dart';
 
 class Day {
   final int month;

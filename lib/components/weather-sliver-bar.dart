@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/models/city.dart';
-import 'package:mobile/models/day.dart';
-import 'package:mobile/utils/app-routes.dart';
+import '../models/city.dart';
+import '../models/day.dart';
+import '../utils/app-routes.dart';
 
 class WeatherSliverBar extends StatelessWidget {
   // const WeatherSliverBar({Key? key}) : super(key: key);

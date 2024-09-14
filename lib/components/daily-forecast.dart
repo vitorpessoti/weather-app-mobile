@@ -9,7 +9,7 @@ class DailyForecast extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 120,
+      height: 130,
       child: Padding(
         padding: const EdgeInsets.only(top: 15.0),
         child: ListView.builder(
